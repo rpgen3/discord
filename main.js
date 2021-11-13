@@ -11,16 +11,8 @@
           body = $('<dl>').appendTo(html),
           foot = $('<dl>').appendTo(html);
     const rpgen3 = await importAll([
-        'input',
-        'css',
-        'url',
-        'hankaku',
-        'sample'
+        'input'
     ].map(v => `https://rpgen3.github.io/mylib/export/${v}.mjs`));
-    Promise.all([
-        'table',
-        'kernel'
-    ].map(v => `css/${v}.css`).map(rpgen3.addCSS));
     const addBtn = (h, ttl, func) => $('<button>').appendTo(h).text(ttl).on('click', func);
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
     $('<div>').appendTo(head).text('discordの絵文字でプリントする');
