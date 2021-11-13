@@ -26,9 +26,9 @@ const add = (r, g, b, v) => {
 for(const [k, v] of dicMap) add(...v, k);
 export const getEmoji = (r, g, b, type = 0) => {
     const code = getTrendCode(r, g, b);
-    if(!obj.has(code)) throw 'missing dic';
+    if(!codeMap.has(code)) throw 'missing dic';
     let min = 1, output = null;
-    for(const v of obj.get(code)) {
+    for(const v of codeMap.get(code)) {
         const [r, g, b] = dicMap.get(v),
               dif = diffColor([r, g, b], v, type);
         if(min > dif) {
