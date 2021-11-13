@@ -54,7 +54,7 @@
             }
         });
         selectImg.elm.on('change', () => {
-            image.load(`img/${selectImg()}`);
+            image.load(`https://rpgen3.github.io/spatialFilter/img/${selectImg()}`);
         }).trigger('change');
         const inputURL = rpgen3.addInputStr(image.config, {
             label: '外部URL'
@@ -106,7 +106,8 @@
         'getEmoji'
     ].map(v=>`./mjs/${v}.mjs`));
     const start = async () => {
-        const {img} = image,
+        const type = inputType(),
+              {img} = image,
               {width, height} = img,
               w = inputWidth(),
               h = w * (height / width) | 0,
@@ -122,7 +123,7 @@
         for(const i of Array(max).keys()) {
             if(!(++cnt % 100)) await msg.print(`${i}/${max}`);
             const _i = i << 2;
-            result += `:${rpgen4.getEmoji(...data.subarray(_i, _i + 4))}:`;
+            result += `:${rpgen4.getEmoji(...data.subarray(_i, _i + 4), type)}:`;
             if(!((i + 1) % width)) result += '\n';
         }
         await msg.print(`文字数：${result.length}`);
