@@ -76,13 +76,21 @@
     const inputWidth = rpgen3.addInputNum(body, {
         label: '幅',
         save: true,
-        min: 16,
-        max: 64,
-        value: 16
+        min: 3,
+        max: 32,
+        value: 8
+    });
+    const inputMax = rpgen3.addInputNum(body, {
+        label: '最大文字数',
+        save: true,
+        min: 500,
+        max: 2000,
+        value: 2000,
+        step: 500
     });
     const msg = new class {
         constructor(){
-            this.html = $('<div>').appendTo(foot);
+            this.html = $('<div>').appendTo(body);
         }
         async print(str){
             this.html.text(str);
@@ -98,6 +106,7 @@
     ].map(v=>`https://rpgen3.github.io/discord/mjs/${v}.mjs`));
     const start = async () => {
         const type = inputType(),
+              max = inputMax() / 6,
               {img} = image,
               {width, height} = img,
               w = inputWidth(),
@@ -109,17 +118,24 @@
               ctx = cv.get(0).getContext('2d');
         ctx.drawImage(img, 0, 0, w, h);
         const {data} = ctx.getImageData(0, 0, w, h),
-              max = data.length >> 2;
-        let cnt = 0, result = '';
-        for(const i of Array(max).keys()) {
-            if(!(++cnt % 100)) await msg.print(`${i}/${max}`);
+              len = data.length >> 2;
+        let cnt = 0, str = '';
+        for(const i of Array(len).keys()) {
+            if(!(++cnt % 100)) await msg.print(`${i}/${len}`);
             const _i = i << 2;
-            result += `:${rpgen4.getEmoji(...data.subarray(_i, _i + 4), type)}:`;
-            if(!((i + 1) % width)) result += '\n';
+            str += `:${rpgen4.getEmoji(...data.subarray(_i, _i + 3), type)}:`;
+            if(!((i + 1) % w)) str += '\n';
         }
-        await msg.print(`文字数：${result.length}`);
-        rpgen3.addInputStr(foot.empty(),{
-            value: result,
+        const arr = [''];
+        for(const line of str.split('\n')) {
+            const s = arr[arr.length - 1];
+            if(s.length + line.length + 1 < max) arr[arr.length - 1] += line + '\n';
+            else arr.push(line + '\n');
+        }
+        foot.empty();
+        for(const str of arr) rpgen3.addInputStr(foot,{
+            value: str.trim(),
+            textarea: true,
             copy: true
         });
     };
