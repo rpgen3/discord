@@ -88,10 +88,6 @@
         max: 64,
         value: 16
     });
-    addBtn(body.append('<br>'), '出力', () => main()).css({
-        color: 'white',
-        backgroundColor: 'red'
-    });
     const msg = new class {
         constructor(){
             this.html = $('<div>').appendTo(foot);
@@ -101,7 +97,10 @@
             await sleep(0);
         }
     };
-    addBtn(body, '処理開始', () => start());
+    addBtn(body, '出力', () => start()).css({
+        color: 'white',
+        backgroundColor: 'red'
+    });
     const rpgen4 = await importAll([
         'getEmoji'
     ].map(v=>`./mjs/${v}.mjs`));
