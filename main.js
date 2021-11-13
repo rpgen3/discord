@@ -95,7 +95,7 @@
     });
     const rpgen4 = await importAll([
         'getEmoji'
-    ].map(v=>`./mjs/${v}.mjs`));
+    ].map(v=>`https://rpgen3.github.io/discord/mjs/${v}.mjs`));
     const start = async () => {
         const type = inputType(),
               {img} = image,
