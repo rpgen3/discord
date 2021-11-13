@@ -23,7 +23,7 @@
     ].map(v => `css/${v}.css`).map(rpgen3.addCSS));
     const addBtn = (h, ttl, func) => $('<button>').appendTo(h).text(ttl).on('click', func);
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-    $('<div>').appendTo(head).text('空間フィルタリングのテスト');
+    $('<div>').appendTo(head).text('discordの絵文字でプリントする');
     $('<div>').appendTo(head).text('処理する画像の設定');
     const makeLoadFunc = ctor => url => new Promise((resolve, reject) => Object.assign(new ctor, {
         onload: ({target}) => resolve(target),
