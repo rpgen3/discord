@@ -23,7 +23,7 @@ const add = (r, g, b, v) => {
     if(!codeMap.has(code)) codeMap.set(code, []);
     codeMap.get(code).push(v);
 };
-for(const [k, v] of dic) add(...v, k);
+for(const [k, v] of dicMap) add(...v, k);
 export const getEmoji = (r, g, b, type = 0) => {
     const code = getTrendCode(r, g, b);
     if(!obj.has(code)) throw 'missing dic';
