@@ -122,7 +122,7 @@
         for(const i of Array(max).keys()) {
             if(!(++cnt % 100)) await msg.print(`${i}/${max}`);
             const _i = i << 2;
-            result += `:${rpgen4.getEmoji(data.subarray(_i, _i + 4))}:`;
+            result += `:${rpgen4.getEmoji(...data.subarray(_i, _i + 4))}:`;
             if(!((i + 1) % width)) result += '\n';
         }
         await msg.print(`文字数：${result.length}`);
