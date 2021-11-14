@@ -91,6 +91,10 @@
         backgroundColor: 'red'
     });
     const luminance = (r, g, b) => r * 0.298912 + g * 0.586611 + b * 0.114478 | 0;
+    const luminanceAlpha = (r, g, b, a) => {
+        const rate = a / 255;
+        return luminance(...[r, g, b].map(v => v * rate));
+    };
     const RGB2code = (r, g, b) => [r, g, b].map(v=>('0' + (v|0).toString(16)).slice(-2)).join('').toUpperCase();
     const start = async () => {
         const max = inputMax() / 6,
@@ -111,7 +115,7 @@
             if(!(++cnt % 100)) await msg.print(`${i}/${len}`);
             const _i = i << 2,
                   [r, g, b, a] = data.subarray(_i, _i + 4);
-            if(a) str += `:${RGB2code(...Array(3).fill(luminance(r, g, b) & 0xf8))}:`;
+            if(a) str += `:${RGB2code(...Array(3).fill(luminanceAlpha(r, g, b, a) & 0xf8))}:`;
             else str += ':null:';
             if(!((i + 1) % w)) str += '\n';
         }
