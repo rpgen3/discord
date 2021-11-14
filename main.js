@@ -111,7 +111,7 @@
             if(!(++cnt % 100)) await msg.print(`${i}/${len}`);
             const _i = i << 2,
                   [r, g, b, a] = data.subarray(_i, _i + 4);
-            if(a === 255) str += `:${RGB2code(...Array(3).fill(luminance(r, g, b) & 0xf8))}:`;
+            if(a) str += `:${RGB2code(...Array(3).fill(luminance(r, g, b) & 0xf8))}:`;
             else str += ':null:';
             if(!((i + 1) % w)) str += '\n';
         }
