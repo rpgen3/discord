@@ -95,7 +95,6 @@
         const rate = a / 255;
         return luminance(...[r, g, b].map(v => v * rate));
     };
-    const RGB2code = (r, g, b) => [r, g, b].map(v=>('0' + (v|0).toString(16)).slice(-2)).join('').toUpperCase();
     const start = async () => {
         const max = inputMax() / 6,
               {img} = image,
@@ -115,8 +114,8 @@
             if(!(++cnt % 100)) await msg.print(`${i}/${len}`);
             const _i = i << 2,
                   [r, g, b, a] = data.subarray(_i, _i + 4);
-            if(a) str += `:${RGB2code(...Array(3).fill(luminanceAlpha(r, g, b, a) & 0xf8))}:`;
-            else str += ':null:';
+            if(a) str += `:${('0' + ((luminanceAlpha(r, g, b, a) & 0xf8) >> 3)).slice(-2)}:`;
+            else str += ':32:';
             if(!((i + 1) % w)) str += '\n';
         }
         const arr = [''];
