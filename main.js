@@ -62,17 +62,6 @@
             if(files.length) image.load(URL.createObjectURL(files[0]));
         });
     }
-    const inputType = rpgen3.addSelect(body, {
-        label: '色比較アルゴリズム',
-        save: true,
-        list: {
-            'RGB表色系でのユークリッド距離による色差の計算' : 3,
-            'XYZ表色系でのユークリッド距離による色差の計算' : 2,
-            'L*a*b*表色系でのユークリッド距離による色差の計算' : 1,
-            'CIEDE2000による色差の計算' : 0
-        },
-        value: 'CIEDE2000による色差の計算'
-    });
     const inputWidth = rpgen3.addInputNum(body, {
         label: '幅',
         save: true,
@@ -101,12 +90,10 @@
         color: 'white',
         backgroundColor: 'red'
     });
-    const rpgen4 = await importAll([
-        'getEmoji'
-    ].map(v=>`https://rpgen3.github.io/discord/mjs/${v}.mjs`));
+    const luminance = (r, g, b) => r * 0.298912 + g * 0.586611 + b * 0.114478 | 0;
+    const RGB2code = (r, g, b) => [r, g, b].map(v=>('0' + (v|0).toString(16)).slice(-2)).join('').toUpperCase();
     const start = async () => {
-        const type = inputType(),
-              max = inputMax() / 6,
+        const max = inputMax() / 6,
               {img} = image,
               {width, height} = img,
               w = inputWidth(),
@@ -122,8 +109,10 @@
         let cnt = 0, str = '';
         for(const i of Array(len).keys()) {
             if(!(++cnt % 100)) await msg.print(`${i}/${len}`);
-            const _i = i << 2;
-            str += `:${rpgen4.getEmoji(...data.subarray(_i, _i + 3), type)}:`;
+            const _i = i << 2,
+                  [r, g, b, a] = data.subarray(_i, _i + 4);
+            if(a) str += `:${RGB2code(...Array(3).fill(luminance(r, g, b) & 0xf8))}:`;
+            else str += ':null:';
             if(!((i + 1) % w)) str += '\n';
         }
         const arr = [''];
