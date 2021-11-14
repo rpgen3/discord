@@ -67,7 +67,7 @@
         save: true,
         min: 3,
         max: 32,
-        value: 8
+        value: 16
     });
     const inputMax = rpgen3.addInputNum(body, {
         label: '最大文字数',
