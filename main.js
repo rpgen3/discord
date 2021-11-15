@@ -90,11 +90,8 @@
         color: 'white',
         backgroundColor: 'red'
     });
-    const luminance = (r, g, b) => r * 0.298912 + g * 0.586611 + b * 0.114478 | 0;
-    const luminanceAlpha = (r, g, b, a) => {
-        const rate = a / 255;
-        return luminance(...[r, g, b].map(v => v * rate));
-    };
+    const luminance = (r, g, b) => r * 0.298912 + g * 0.586611 + b * 0.114478,
+          luminanceAlpha = (r, g, b, a) => luminance(r, g, b) * a / 255;
     const start = async () => {
         const max = inputMax() / 6,
               {img} = image,
